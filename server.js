@@ -24,6 +24,14 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+app.get("/api", function(req, res) {
+  var Date = req.query.date;
+  // Use template literals to form a formatted string
+  res.json({
+    unix: `${Date}`
+  });
+});
+
 
 
 // listen for requests :)
