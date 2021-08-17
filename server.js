@@ -25,17 +25,26 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.get("/api/:date?", function(req, res) {
-  var date = req.params.date;
-  var conv_date = Number(req.params.date);
-
-  var data = isNaN(conv_date) ? new Date(date).getTime() : new Date(conv_date).getTime();
-  var data_utc = new Date(data).toUTCString();
+  //get the date input by the user into Indate variable
+  var Indate = req.params.date;
+  //if Indate is empty (no user input date) get local time
+  if(!Indate){
+    var date_unix = new Date().getTime();
+  }
+  //Otherwise check if date is input in unix format
+  else {
+    var date_num = Number(Indate); //try to convert Indate into a number..
+    var date_unix = isNaN(date_num) ? new Date(Indate).getTime() : new Date(date_num).getTime(); //and assign the numeric Indate if successful or string Indate otherwise
+  }
+  //convert date to utc string
+  var date_utc = new Date(date_unix).toUTCString();
   
-  if (data_utc == "Invalid date"){
-    res.json({error: "Invalid date"});
+  //check if input data is valid
+  if (isNaN(date_unix) === false){
+    res.json({unix: date_unix, utc: `${date_utc}`}); //if it is, send a json object with unix and utc date formats
   }
   else{
-    res.json({unix: data, utc: `${data_utc}`});}
+    res.json({error: "Invalid date"});} //otherwise send json object with "Invalid date" message
 });
 
 
