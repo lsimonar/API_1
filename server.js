@@ -27,10 +27,10 @@ app.get("/api/hello", function (req, res) {
 app.get("/api/:date", function(req, res) {
   const { date } = req.params;
   var data = new Date(date).getTime();
+  var data_utc = new Date(date).toUTCString();
   // Use template literals to form a formatted string
-  res.json({unix: `${data}`});
+  res.json({unix: `${data}`, utc: `${data_utc}`});
 });
-
 
 
 // listen for requests :)
